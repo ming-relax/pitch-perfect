@@ -11,4 +11,12 @@ import Foundation
 class RecordedAudio: NSObject {
     var filePathURL: NSURL!
     var title: String!
+    
+    init(fileName: String) {
+        // Make up a file name
+        let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
+        let pathArray = [dirPath, fileName]
+        
+        filePathURL = NSURL.fileURLWithPathComponents(pathArray)
+    }
 }

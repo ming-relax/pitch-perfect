@@ -14,18 +14,22 @@ class PlayAudioViewController: UIViewController {
     @IBOutlet weak var stopPlayAudioButton: UIButton!
 
     var recordedAudio: RecordedAudio!
-    var audioPlayer: AVAudioPlayer!
     var audioEngine: AVAudioEngine!
     var audioFile: AVAudioFile!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        try! audioPlayer = AVAudioPlayer(contentsOfURL: recordedAudio.filePathURL)
         audioEngine = AVAudioEngine()
         audioFile = try! AVAudioFile(forReading: recordedAudio.filePathURL)
         
     }
+
+    @IBAction func stopAudioPlayer(sender: UIButton) {
+        audioEngine.stop()
+        audioEngine.reset()
+    }
+
     
     @IBAction func playSlow(sender: UIButton) {
         playSound(rate: 0.5, pitch: 1.0)
@@ -46,7 +50,6 @@ class PlayAudioViewController: UIViewController {
     func playSound(rate rate: Float, pitch: Float) {
         stopPlayAudioButton.hidden = false
         
-        audioPlayer.stop()
         audioEngine.stop()
         audioEngine.reset()
         

@@ -34,7 +34,8 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate {
     @IBAction func recordAudio(sender: UIButton) {
         // Update UI
         stopButton.hidden = false
-        recordStatusLabel.hidden = false
+//        recordStatusLabel.hidden = false
+        recordStatusLabel.text = "Recording"
         recordButton.enabled = false
         
         // Start record audio
@@ -43,21 +44,14 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate {
         try! recordingSession.setActive(true)
         try! recordingSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
         
-        // Make up a file name
-        let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-        let recordingName = "pitch_perfect.wav"
-        let pathArray = [dirPath, recordingName]
-        let filePath = NSURL.fileURLWithPathComponents(pathArray)
+        recordedAudio = RecordedAudio(fileName: "pitch_perfect.wav")
         
-        
-        try! audioRecorder = AVAudioRecorder(URL: filePath!, settings: [:])
+        try! audioRecorder = AVAudioRecorder(URL: recordedAudio.filePathURL, settings: [:])
         audioRecorder.delegate = self
         audioRecorder.meteringEnabled = true
         audioRecorder.prepareToRecord()
         audioRecorder.record()
         
-        recordedAudio = RecordedAudio()
-        recordedAudio.filePathURL = filePath
     }
     
     @IBAction func stopRecordAudio(sender: UIButton) {
@@ -68,7 +62,8 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate {
         if flag {
             // Update UI
             recordButton.enabled = true
-            recordStatusLabel.hidden = true
+//            recordStatusLabel.hidden = true
+            recordStatusLabel.text = "Type to Record"
             stopButton.hidden = true
             
             performSegueWithIdentifier("stopRecordAudio", sender: self)
